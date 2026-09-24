@@ -424,14 +424,32 @@ const air = Number(data.air_quality) === 0
   addLog(temp, hum, soil, air, phi);
 
   if (phi < 40) {
-    triggerAlert(`CRITICAL: PHI is ${phi} — immediate action needed!`);
-  } else if (temp > 38) {
-    triggerAlert(`WARNING: Temperature ${temp.toFixed(1)}°C is dangerously high!`);
-  } else if (soil > 3500) {
-    triggerAlert(`WARNING: Soil moisture critically low!`);
-  } else {
-    dismissAlert();
-  }
+  triggerAlert(`🚨 CRITICAL: Plant Health Index is ${phi} — immediate attention required!`);
+
+} else if (temp < 18) {
+  triggerAlert(`🥶 WARNING: Low Temperature — ${temp.toFixed(1)}°C. Heating may be required.`);
+
+} else if (temp > 29) {
+  triggerAlert(`🌡️ WARNING: High Temperature — ${temp.toFixed(1)}°C. Ventilation may be required.`);
+
+} else if (hum < 65) {
+  triggerAlert(`💧 WARNING: Low Humidity — ${hum.toFixed(1)}%. Moisture may be required.`);
+
+} else if (hum > 85) {
+  triggerAlert(`💧 WARNING: High Humidity — ${hum.toFixed(1)}%. Ventilation may be required.`);
+
+} else if (soil > 2000) {
+  triggerAlert(`🌱 WARNING: Low Soil Moisture — ${Math.round(soil)}. Irrigation may be required.`);
+
+} else if (soil < 1200) {
+  triggerAlert(`🌱 WARNING: Soil Moisture High — ${Math.round(soil)}. Reduce irrigation.`);
+
+} else if (air > 2000) {
+  triggerAlert(`🌫️ WARNING: Poor Air Quality — ADC ${Math.round(air)}. Check ventilation.`);
+
+} else {
+  dismissAlert();
+}
 } else {
   // Air-quality sensor is still warming up / unavailable.
   document.getElementById('phiVal').textContent = '--';
