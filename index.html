@@ -511,8 +511,20 @@ function setRelay(id, state) {
 
 function setAuto(id) {
   autoMode[id] = true;
+
   document.getElementById('mode-' + id).textContent = 'AUTO';
   document.getElementById('mode-' + id).className = 'relay-mode auto';
+
+  // Tell ESP32 to switch this relay into AUTO mode
+  if (client && client.connected) {
+    client.publish(
+      TOPIC_CONTROL,
+      JSON.stringify({
+        device: id,
+        mode: 'auto'
+      })
+    );
+  }
 }
 
 // ALERTS
